@@ -3,9 +3,9 @@ package ceejay.advent
 import ceejay.advent.util.Day
 import ceejay.advent.util.Input
 import ceejay.advent.util.illegal
-import ceejay.advent.util.withLines
 
-object Day01 : Day<Int, Int>() {
+object `Day 1 - Not Quite Lisp` : Day<Int, Int>() {
+    override val number = 1
 
     override fun doPart1(input: Input) = input.withLines {
         single().parse().sum()
@@ -18,7 +18,7 @@ object Day01 : Day<Int, Int>() {
         for ((i, v) in numbers.withIndex()) {
             accumulator += v
             if (accumulator == -1) {
-                return i + 1
+                return@withLines i + 1
             }
         }
 

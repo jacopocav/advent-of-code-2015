@@ -18,17 +18,12 @@ sealed interface Input {
     }
 }
 
-inline fun <T> Input.useLines(
-    ignoreBlankLines: Boolean = true,
-    block: (Sequence<String>) -> T,
-) = withLines(ignoreBlankLines, block)
-
-
 inline fun <T> Input.withLines(
+    filePrefix: String,
     ignoreBlankLines: Boolean = true,
     block: Sequence<String>.() -> T,
 ): T {
-    val reader = ClassLoader.getSystemResourceAsStream(fileName)
+    val reader = ClassLoader.getSystemResourceAsStream(filePrefix + fileName)
         ?.buffered()
         ?.reader()
         ?: throw FileNotFoundException(fileName)

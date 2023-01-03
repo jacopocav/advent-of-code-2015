@@ -3,31 +3,42 @@ import ceejay.advent.util.Input
 import ceejay.advent.util.illegal
 
 fun main(args: Array<String>) {
-    val (number, day, input) = args.parse()
+    val (day, inputs) = args.parse()
 
-    println("Running day $number on input ${input.fileName}")
-    day.part1(input).also { println("Part 1 result: $it") }
-    day.part2(input).also { println("Part 2 result: $it") }
+    inputs.forEach { input ->
+        println("Running '$day' on input '${day.filePrefix}${input.fileName}'")
+
+        runCatching { day.part1(input) }
+            .onSuccess { println("Part 1 result: $it") }
+            .onFailure {
+                println("Part 1 failed")
+                it.printStackTrace()
+            }
+        runCatching { day.part2(input) }
+            .onSuccess { println("Part 2 result: $it") }
+            .onFailure {
+                println("Part 2 failed")
+                it.printStackTrace()
+            }
+    }
 }
 
-private fun Array<String>.parse(): Triple<Int, Day<*, *>, Input> {
+private fun Array<String>.parse(): Pair<Day<*, *>, List<Input>> {
     require(isNotEmpty()) { "must pass at least one argument (day number)" }
 
-    val dayNum = first().toIntOrNull()
-
-    val day = dayNum
+    val day = first().toIntOrNull()
         ?.let { Day.registry[it] }
         ?: illegal("first argument ${first()} is not a number or is not one of ${Day.registry.keys.sorted()}")
 
-    val input = getOrNull(1)
+    val inputs = getOrNull(1)
         ?.lowercase()
         ?.let {
             inputMap[it]
                 ?: illegal("invalid second argument: $it. Valid arguments are ${inputMap.keys}")
-        }
-        ?: Input.Real
+        }?.let { listOf(it) }
+        ?: listOf(Input.Example, Input.Real)
 
-    return Triple(dayNum, day, input)
+    return day to inputs
 }
 
 private val inputMap = mapOf(
