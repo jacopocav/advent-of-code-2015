@@ -29,5 +29,6 @@ allprojects {
 
 dependencies {
     runtimeOnly("ch.qos.logback:logback-classic:1.4.5")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     subprojects.map { implementation(it) }
 }

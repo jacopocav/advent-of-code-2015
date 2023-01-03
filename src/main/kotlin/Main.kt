@@ -1,25 +1,24 @@
 import ceejay.advent.util.Day
 import ceejay.advent.util.Input
 import ceejay.advent.util.illegal
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
 
 fun main(args: Array<String>) {
-    val (day, inputs) = args.parse()
+    runBlocking {
+        val (day, inputs) = args.parse()
+        println("Running $day...")
 
-    inputs.forEach { input ->
-        println("Running '$day' on input '${day.filePrefix}${input.fileName}'")
-
-        runCatching { day.part1(input) }
-            .onSuccess { println("Part 1 result: $it") }
-            .onFailure {
-                println("Part 1 failed")
-                it.printStackTrace()
-            }
-        runCatching { day.part2(input) }
-            .onSuccess { println("Part 2 result: $it") }
-            .onFailure {
-                println("Part 2 failed")
-                it.printStackTrace()
-            }
+        inputs.flatMap { input ->
+            listOf(
+                runPart(1, day, input),
+                runPart(2, day, input),
+            )
+        }.awaitAll()
+            .groupBy { it.input }
+            .map { it.printResults() }
     }
 }
 
@@ -39,6 +38,30 @@ private fun Array<String>.parse(): Pair<Day<*, *>, List<Input>> {
         ?: listOf(Input.Example, Input.Real)
 
     return day to inputs
+}
+
+private data class Result(val part: Int, val input: Input, val result: Any)
+
+private fun CoroutineScope.runPart(part: Int, day: Day<*, *>, input: Input) =
+    async {
+        try {
+            val result = day.part(part, input)
+            Result(part, input, result)
+        } catch (e: Exception) {
+            Result(part, input, e)
+        }
+    }
+
+private fun Map.Entry<Input, List<Result>>.printResults() = let { (input, results) ->
+    println("  - file: ${input.fileName}")
+    results.forEach { (part, _, result) ->
+        print("    - Part $part result: ")
+        if (result is Throwable) {
+            result.printStackTrace(System.out)
+        } else {
+            println(result)
+        }
+    }
 }
 
 private val inputMap = mapOf(

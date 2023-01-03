@@ -4,37 +4,31 @@ import ceejay.advent.util.Day
 import ceejay.advent.util.isEven
 import java.security.MessageDigest
 
-@OptIn(ExperimentalUnsignedTypes::class)
 object `Day 4 - The Ideal Stocking Stuffer` : Day<Int, Int>() {
     override val number = 4
 
-    private val zero: UByte = 0u
-    private val sixteen: UByte = 16u
+    private const val zero: Byte = 0
+    private const val sixteen: UByte = 16u
 
-    private val md5: MessageDigest = MessageDigest.getInstance("MD5")
+    override fun Sequence<String>.doPart1(): Int = run(5)
 
-    override fun Sequence<String>.doPart1(): Int {
+    override fun Sequence<String>.doPart2(): Int = run(6)
+
+    private fun Sequence<String>.run(zeros: Int): Int {
         val input = single()
-        return generateSequence(1) { it + 1 }
-            .first { n ->
-                (input + n).md5().startsWithZeros(5)
-            }
+        val md5 = MessageDigest.getInstance("MD5")
+        return (1..Int.MAX_VALUE)
+            .first { (input + it).digest(md5).startsWithHexZeros(zeros) }
     }
 
-    override fun Sequence<String>.doPart2(): Int {
-        val input = single()
-        return generateSequence(1) { it + 1 }
-            .first { n ->
-                (input + n).md5().startsWithZeros(6)
-            }
-    }
+    private fun String.digest(algorithm: MessageDigest) = algorithm.digest(encodeToByteArray())
 
-    private fun String.md5() = md5.digest(encodeToByteArray())
-
-    private fun ByteArray.startsWithZeros(num: Int): Boolean {
+    private fun ByteArray.startsWithHexZeros(num: Int): Boolean {
         val half = num / 2
-        return indexOfFirst { it.toUByte() != zero } >= half
-            && (num.isEven() || this[half].toUByte() < sixteen)
+        for (i in 0 until half) {
+            if (this[i] != zero) return false
+        }
+        return num.isEven() || this[half].toUByte() < sixteen
     }
 }
 

@@ -7,6 +7,12 @@ import org.reflections.util.ConfigurationBuilder
 abstract class Day<O, T> {
     abstract val number: Int
 
+    fun part(num: Int, input: Input): TimedResult<out Any?> = when (num) {
+        1 -> part1(input)
+        2 -> part2(input)
+        else -> error("part not supported $num")
+    }
+
     fun part1(input: Input): TimedResult<O> = timed { input.withLines { doPart1() } }
     fun part2(input: Input): TimedResult<T> = timed { input.withLines { doPart2() } }
 
