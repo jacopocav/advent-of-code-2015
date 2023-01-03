@@ -15,16 +15,14 @@ abstract class Day<O, T> {
     override fun toString(): String = this::class.simpleName!!
 
     companion object {
-        val registry: Map<Int, Day<*, *>>
-
-        init {
+        val registry: Map<Int, Day<*, *>> by lazy {
             val ref = Reflections(
                 ConfigurationBuilder()
                     .forPackage("ceejay.advent")
                     .addScanners(Scanners.SubTypes)
             )
 
-            registry = ref.getSubTypesOf(Day::class.java)
+            ref.getSubTypesOf(Day::class.java)
                 .associate {
                     val number = it.simpleName.substringAfter("Day").toIntOrNull()
                         ?: error("class ${it.simpleName} does not have name in the format Day##")

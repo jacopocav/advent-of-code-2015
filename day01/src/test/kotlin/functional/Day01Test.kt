@@ -2,11 +2,9 @@ package functional
 
 import ceejay.advent.Day01
 import ceejay.advent.util.Input
-import org.junit.jupiter.api.Disabled
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-@Disabled
 class Day01Test {
 
     @Test
@@ -15,7 +13,7 @@ class Day01Test {
         val (actual, _) = Day01.part1(Input.Example)
 
         // then
-        assertEquals(TODO(), actual)
+        assertEquals(-3, actual)
     }
 
     @Test
@@ -24,7 +22,7 @@ class Day01Test {
         val (actual, _) = Day01.part1(Input.Real)
 
         // then
-        assertEquals(TODO(), actual)
+        assertEquals(138, actual)
     }
 
     @Test
@@ -33,7 +31,7 @@ class Day01Test {
         val (actual, _) = Day01.part2(Input.Example)
 
         // then
-        assertEquals(TODO(), actual)
+        assertEquals(0, actual)
     }
 
     @Test
@@ -42,6 +40,6 @@ class Day01Test {
         val (actual, _) = Day01.part2(Input.Real)
 
         // then
-        assertEquals(TODO(), actual)
+        assertEquals(1771, actual)
     }
 }
