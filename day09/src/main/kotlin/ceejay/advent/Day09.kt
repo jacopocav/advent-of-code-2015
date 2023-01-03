@@ -1,16 +1,15 @@
 package ceejay.advent
 
 import ceejay.advent.util.Day
-import ceejay.advent.util.Input
 
 object Day09 : Day<Any, Any>() {
     override val number = 9
 
-    override fun doPart1(input: Input): Any {
+    override fun Sequence<String>.doPart1(): Any {
         TODO("Not yet implemented")
     }
 
-    override fun doPart2(input: Input): Any {
+    override fun Sequence<String>.doPart2(): Any {
         TODO("Not yet implemented")
     }
 }

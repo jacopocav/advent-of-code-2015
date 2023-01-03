@@ -1,32 +1,34 @@
 package ceejay.advent
 
-import ceejay.advent.util.*
+import ceejay.advent.util.Day
 import ceejay.advent.util.Vector2D.Companion.vector
 import ceejay.advent.util.Vector2D.Direction.*
+import ceejay.advent.util.illegal
+import ceejay.advent.util.isEven
+import ceejay.advent.util.isOdd
 
-object `Day 3 - Perfectly Spherical Houses in a Vacuum` : Day<Int, Any>() {
+object `Day 3 - Perfectly Spherical Houses in a Vacuum` : Day<Int, Int>() {
     override val number = 3
 
-    override fun doPart1(input: Input) = input.withLines {
+    override fun Sequence<String>.doPart1(): Int {
         val directions = single().parse()
         val destinations = directions
             .runningFold(vector(0, 0)) { pos, dir -> pos move dir }
             .toSet()
 
-        destinations.size
+        return destinations.size
     }
 
-    override fun doPart2(input: Input) = input.withLines {
+    override fun Sequence<String>.doPart2(): Int {
         val directions = single().parse()
-        val santaDirections = directions.filterIndexed { i, _ -> i.isEven() }
-        val roboSantaDirections = directions.filterIndexed { i, _ -> i.isOdd() }
 
-        val santaPositions = santaDirections
-            .runningFold(vector(0, 0)) { pos, dir -> pos move dir }
-        val roboSantaPositions = roboSantaDirections
+        val santaPositions = directions.filterIndexed { i, _ -> i.isEven() }
             .runningFold(vector(0, 0)) { pos, dir -> pos move dir }
 
-        (santaPositions + roboSantaPositions).toSet().size
+        val roboSantaPositions = directions.filterIndexed { i, _ -> i.isOdd() }
+            .runningFold(vector(0, 0)) { pos, dir -> pos move dir }
+
+        return (santaPositions.toSet() + roboSantaPositions).size
     }
 
     private fun String.parse() = map {

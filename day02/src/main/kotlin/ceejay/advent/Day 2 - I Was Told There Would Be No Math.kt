@@ -1,20 +1,15 @@
 package ceejay.advent
 
 import ceejay.advent.util.Day
-import ceejay.advent.util.Input
 
 object `Day 2 - I Was Told There Would Be No Math` : Day<Int, Int>() {
     override val number = 2
 
-    override fun doPart1(input: Input): Int = input.withLines {
-        map { it.toBox() }
-            .sumOf { box -> box.surface() + box.smallestSurface() }
-    }
+    override fun Sequence<String>.doPart1(): Int = map { it.toBox() }
+        .sumOf { box -> box.surface() + box.smallestSurface() }
 
-    override fun doPart2(input: Input): Int = input.withLines {
-        map { it.toBox() }
-            .sumOf { box -> box.smallestPerimeter() + box.volume() }
-    }
+    override fun Sequence<String>.doPart2(): Int = map { it.toBox() }
+        .sumOf { box -> box.smallestPerimeter() + box.volume() }
 
     private data class Box(val length: Int, val width: Int, val height: Int) {
         private val smallestTwoSides = listOf(length, width, height).sorted().take(2)

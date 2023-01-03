@@ -7,14 +7,14 @@ import org.reflections.util.ConfigurationBuilder
 abstract class Day<O, T> {
     abstract val number: Int
 
-    fun part1(input: Input): TimedResult<O> = timed { doPart1(input) }
-    fun part2(input: Input): TimedResult<T> = timed { doPart2(input) }
+    fun part1(input: Input): TimedResult<O> = timed { input.withLines { doPart1() } }
+    fun part2(input: Input): TimedResult<T> = timed { input.withLines { doPart2() } }
 
-    protected abstract fun doPart1(input: Input): O
-    protected abstract fun doPart2(input: Input): T
+    protected abstract fun Sequence<String>.doPart1(): O
+    protected abstract fun Sequence<String>.doPart2(): T
     val filePrefix get() = "${number.toString().padStart(2, '0')}-"
 
-    protected fun <T> Input.withLines(block: Sequence<String>.() -> T) =
+    private fun <T> Input.withLines(block: Sequence<String>.() -> T) =
         withLines(filePrefix, block = block)
 
     override fun toString(): String = this::class.simpleName!!
