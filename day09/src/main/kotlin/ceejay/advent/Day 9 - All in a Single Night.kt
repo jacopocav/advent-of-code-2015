@@ -9,16 +9,18 @@ object `Day 9 - All in a Single Night` : Day<Int, Any>() {
         val edges = parseEdges()
 
         return with(Dijkstra(edges)) {
-            shortestPathThroughAllNodes().also { debug(it) }.dist
+            shortestPathThroughAllNodes().also {
+                debug { "Shortest distance path: $it" }
+            }.dist
         }
     }
 
     override fun Sequence<String>.doPart2(): Any {
         val edges = parseEdges()
         return with(LongestDistanceFinder(edges)) {
-            val (path, dist) = find()
-            debug(path)
-            dist
+            find().also {
+                debug { "Longest distance path: $it" }
+            }.totalDistance
         }
     }
 
