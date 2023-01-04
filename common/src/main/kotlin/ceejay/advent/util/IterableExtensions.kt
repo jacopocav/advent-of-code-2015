@@ -1,5 +1,8 @@
 package ceejay.advent.util
 
+import java.util.*
+import kotlin.collections.ArrayDeque
+
 inline fun <T> MutableList<T>.removeWhile(crossinline predicate: (T) -> Boolean): List<T> =
     buildList {
         val outer = this@removeWhile
@@ -34,3 +37,24 @@ fun <T> Iterable<T>.toMutableDeque() = toCollection(ArrayDeque())
 fun <T> Sequence<T>.toMutableDeque() = toCollection(ArrayDeque())
 
 fun String.toMutableDeque() = toCollection(ArrayDeque())
+
+fun <T, K : Comparable<K>> priorityQueueComparing(
+    descending: Boolean = false,
+    keySelector: (T) -> K,
+) = PriorityQueue(if (descending) compareByDescending(keySelector) else compareBy(keySelector))
+
+fun BitSet.copy(): BitSet = clone() as BitSet
+
+fun <T> Collection<T>.permutations(): Sequence<List<T>> =
+    if (isEmpty()) emptySequence()
+    else if (size == 1) sequenceOf(toList())
+    else sequence {
+        val head = first()
+        for (permutation in drop(1).permutations()) {
+            for (i in 0..permutation.size) {
+                val newPermutation = permutation.toMutableList()
+                newPermutation.add(i, head)
+                yield(newPermutation)
+            }
+        }
+    }

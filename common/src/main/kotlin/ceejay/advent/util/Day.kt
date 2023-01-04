@@ -4,8 +4,10 @@ import org.reflections.Reflections
 import org.reflections.scanners.Scanners
 import org.reflections.util.ConfigurationBuilder
 
-abstract class Day<O, T> {
+abstract class Day<O, T> : Debuggable {
     abstract val number: Int
+    var indent: String = ""
+    override var debugEnabled: Boolean = false
 
     fun part(num: Int, input: Input): TimedResult<out Any?> = when (num) {
         1 -> part1(input)
@@ -26,6 +28,16 @@ abstract class Day<O, T> {
     override fun toString(): String = this::class.simpleName!!
 
     companion object {
+        fun <O, T> Day<O, T>.debug(message: Any) {
+            debug { message.toString() }
+        }
+
+        inline fun <O, T> Day<O, T>.debug(lazyMessage: () -> String) {
+            if (debugEnabled) {
+                println(indent + lazyMessage())
+            }
+        }
+
         val registry: Map<Int, Day<*, *>> by lazy {
             val ref = Reflections(
                 ConfigurationBuilder()

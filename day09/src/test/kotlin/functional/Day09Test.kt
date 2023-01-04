@@ -1,48 +1,46 @@
 package functional
 
-import ceejay.advent.Day09
+import ceejay.advent.`Day 9 - All in a Single Night`
 import ceejay.advent.util.Input
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-import org.junit.jupiter.api.Disabled
-
-@Disabled
 class Day09Test {
+    private val underTest = `Day 9 - All in a Single Night`
 
     @Test
     fun `Part 1 returns correct result on example input`() {
         // when
-        val (actual, _) = Day09.part1(Input.Example)
+        val (actual, _) = underTest.part1(Input.Example)
 
         // then
-        assertEquals(TODO(), actual)
+        assertEquals(605, actual)
     }
 
     @Test
     fun `Part 1 returns correct result on real input`() {
         // when
-        val (actual, _) = Day09.part1(Input.Real)
+        val (actual, _) = underTest.part1(Input.Real)
 
         // then
-        assertEquals(TODO(), actual)
+        assertEquals(207, actual)
     }
 
     @Test
     fun `Part 2 returns correct result on example input`() {
         // when
-        val (actual, _) = Day09.part2(Input.Example)
+        val (actual, _) = underTest.part2(Input.Example)
 
         // then
-        assertEquals(TODO(), actual)
+        assertEquals(982, actual)
     }
 
     @Test
     fun `Part 2 returns correct result on real input`() {
         // when
-        val (actual, _) = Day09.part2(Input.Real)
+        val (actual, _) = underTest.part2(Input.Real)
 
         // then
-        assertEquals(TODO(), actual)
+        assertEquals(804, actual)
     }
 }

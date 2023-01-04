@@ -8,7 +8,13 @@ import kotlinx.coroutines.runBlocking
 
 fun main(args: Array<String>) {
     runBlocking {
-        val (day, inputs) = args.parse()
+        val (day, inputs, debug) = args.parse()
+
+        day.apply {
+            indent = "    "
+            debugEnabled = debug
+        }
+
         println("Running $day...")
 
         inputs.flatMap { input ->
@@ -22,14 +28,17 @@ fun main(args: Array<String>) {
     }
 }
 
-private fun Array<String>.parse(): Pair<Day<*, *>, List<Input>> {
+private fun Array<String>.parse(): Triple<Day<*, *>, List<Input>, Boolean> {
     require(isNotEmpty()) { "must pass at least one argument (day number)" }
 
     val day = first().toIntOrNull()
         ?.let { Day.registry[it] }
         ?: illegal("first argument ${first()} is not a number or is not one of ${Day.registry.keys.sorted()}")
 
+    val debug = last().equals("debug", ignoreCase = true)
+
     val inputs = getOrNull(1)
+        ?.takeIf { !debug || it != last() }
         ?.lowercase()
         ?.let {
             inputMap[it]
@@ -37,7 +46,8 @@ private fun Array<String>.parse(): Pair<Day<*, *>, List<Input>> {
         }?.let { listOf(it) }
         ?: listOf(Input.Example, Input.Real)
 
-    return day to inputs
+
+    return Triple(day, inputs, debug)
 }
 
 private data class Result(val part: Int, val input: Input, val result: Any)
@@ -55,7 +65,7 @@ private fun CoroutineScope.runPart(part: Int, day: Day<*, *>, input: Input) =
     }
 
 private fun Map.Entry<Input, List<Result>>.printResults(day: Day<*, *>) = let { (input, results) ->
-    println("  - file: ${day.number.toString().padStart(2, '0')}-${input.fileName}")
+    println("  - file: ${day.filePrefix}${input.fileName}")
     results.forEach { (part, _, result) ->
         print("    - Part $part result: ")
         if (result is Throwable) {
