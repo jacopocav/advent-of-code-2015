@@ -47,7 +47,9 @@ private fun CoroutineScope.runPart(part: Int, day: Day<*, *>, input: Input) =
         try {
             val result = day.part(part, input)
             Result(part, input, result)
-        } catch (e: Throwable) {
+        } catch (e: NotImplementedError) {
+            Result(part, input, "<not implemented yet>")
+        } catch (e: Exception) {
             Result(part, input, e)
         }
     }
