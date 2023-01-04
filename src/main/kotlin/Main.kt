@@ -18,7 +18,7 @@ fun main(args: Array<String>) {
             )
         }.awaitAll()
             .groupBy { it.input }
-            .map { it.printResults() }
+            .map { it.printResults(day) }
     }
 }
 
@@ -47,13 +47,13 @@ private fun CoroutineScope.runPart(part: Int, day: Day<*, *>, input: Input) =
         try {
             val result = day.part(part, input)
             Result(part, input, result)
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             Result(part, input, e)
         }
     }
 
-private fun Map.Entry<Input, List<Result>>.printResults() = let { (input, results) ->
-    println("  - file: ${input.fileName}")
+private fun Map.Entry<Input, List<Result>>.printResults(day: Day<*, *>) = let { (input, results) ->
+    println("  - file: ${day.number.toString().padStart(2, '0')}-${input.fileName}")
     results.forEach { (part, _, result) ->
         print("    - Part $part result: ")
         if (result is Throwable) {
