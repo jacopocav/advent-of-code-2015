@@ -6,7 +6,7 @@ import ceejay.advent.util.permutations
 
 private typealias Edges = Map<String, Map<String, Int>>
 
-object `Day 13 - Knights of the Dinner Table` : Day<Int, Any>() {
+object `Day 13 - Knights of the Dinner Table` : Day<Int, Int>() {
     override val number = 13
 
     private const val myself = "Myself"
@@ -18,7 +18,7 @@ object `Day 13 - Knights of the Dinner Table` : Day<Int, Any>() {
         return edges.getBestPath().totalHappiness(edges)
     }
 
-    override fun Sequence<String>.doPart2(): Any {
+    override fun Sequence<String>.doPart2(): Int {
         val edges = parseEdges()
         val bestPath = edges.getBestPath().toMutableList()
 
