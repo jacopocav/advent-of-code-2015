@@ -3,6 +3,7 @@ package ceejay.advent
 import ceejay.advent.Ingredient.Companion.parseIngredient
 import ceejay.advent.Teaspoon.Companion.sum
 import ceejay.advent.util.Day
+import ceejay.advent.util.prependTo
 
 object `Day 15 - Science for Hungry People` : Day<Int, Int>() {
     override val number = 15
@@ -33,7 +34,6 @@ object `Day 15 - Science for Hungry People` : Day<Int, Int>() {
         val ingredients = parseIngredients().toList().sortedByDescending { it.teaspoon.calories }
 
         return ingredients.allValidRecipes(maxTeaspoons, maxCalories)
-            .filter { it.totalCalories(ingredients) == maxCalories }
             .map { it.toTeaspoon(ingredients) }
             .maxOf { it.score }
     }
@@ -49,30 +49,39 @@ object `Day 15 - Science for Hungry People` : Day<Int, Int>() {
 
 
     private fun List<Ingredient>.allValidRecipes(
-        maxTeaspoons: Int,
-        maxCalories: Int,
+        remainingTeaspoons: Int,
+        remainingCalories: Int,
         remainingIngredients: Int = size,
     ): Sequence<List<Int>> = let { ingredients ->
         when {
-            maxCalories < 0 -> emptySequence()
-            remainingIngredients == 1 -> sequenceOf(listOf(maxTeaspoons))
+            remainingCalories < 0 -> emptySequence()
+            remainingIngredients == 1 -> sequenceOf(listOf(remainingTeaspoons))
             else -> sequence {
                 val caloriesPerTeaspoon = ingredients[size - remainingIngredients].teaspoon.calories
-                val maxValidTeaspoons = maxCalories / caloriesPerTeaspoon
+                val maxValidTeaspoons = remainingCalories / caloriesPerTeaspoon
                 for (n in 0..maxValidTeaspoons) {
-                    yieldAll(
-                        allValidRecipes(
-                            maxTeaspoons - n,
-                            maxCalories - caloriesPerTeaspoon * n,
-                            remainingIngredients - 1,
-                        ).map { it + n })
+                    when (remainingIngredients) {
+                        2 -> {
+                            val lastCaloriesPerTeaspoon = ingredients.last().teaspoon.calories
+                            if (caloriesPerTeaspoon * n + lastCaloriesPerTeaspoon * (remainingTeaspoons - n) != remainingCalories) {
+                                continue
+                            } else {
+                                yield(listOf(n, remainingTeaspoons - n))
+                            }
+                        }
+
+                        else -> {
+                            yieldAll(
+                                allValidRecipes(
+                                    remainingTeaspoons - n,
+                                    remainingCalories - caloriesPerTeaspoon * n,
+                                    remainingIngredients - 1,
+                                ).map { n prependTo it })
+                        }
+                    }
                 }
             }
         }
     }
-
-    private fun List<Int>.totalCalories(ingredients: List<Ingredient>): Int =
-        mapIndexed { i, teaspoons -> ingredients[i].teaspoon.calories * teaspoons }
-            .sum()
 }
 

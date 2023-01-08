@@ -58,3 +58,5 @@ fun <T> Collection<T>.permutations(): Sequence<List<T>> =
             }
         }
     }
+
+infix fun <T> T.prependTo(iterable: Iterable<T>): List<T> = listOf(this) + iterable
