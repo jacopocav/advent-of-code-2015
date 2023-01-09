@@ -15,6 +15,15 @@ class Rectangle internal constructor(val topLeft: Vector2D, val bottomRight: Vec
 
     override fun containsAll(elements: Collection<Vector2D>): Boolean = elements.all { it in this }
 
+    val xMin = topLeft.x
+    val xMax = bottomRight.x
+
+    val yMin = topLeft.y
+    val yMax = bottomRight.y
+
+    val topRight = vector(bottomRight.x, topLeft.y)
+    val bottomLeft = vector(topLeft.x, bottomRight.y)
+
     @Suppress("ReplaceSizeZeroCheckWithIsEmpty")
     override fun isEmpty(): Boolean = size == 0
 
@@ -26,6 +35,8 @@ class Rectangle internal constructor(val topLeft: Vector2D, val bottomRight: Vec
     }
 
     override fun iterator(): KIterator<Vector2D> = if (isEmpty()) emptyIterator else Iterator()
+
+    override fun toString(): String = "$topLeft..$bottomRight"
 
     private inner class Iterator : KIterator<Vector2D> {
         var hasNext = isNotEmpty()

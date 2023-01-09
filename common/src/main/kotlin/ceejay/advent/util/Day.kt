@@ -37,7 +37,7 @@ abstract class Day<O, T>(val ignoreBlankLines: Boolean = true) : Debuggable {
 
         inline fun <O, T> Day<O, T>.debug(lazyMessage: () -> String) {
             if (debugEnabled) {
-                println(indent + lazyMessage())
+                println(lazyMessage().replaceIndent(indent))
             }
         }
 
