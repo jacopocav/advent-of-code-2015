@@ -3,8 +3,9 @@ package ceejay.advent
 import ceejay.advent.util.Day
 import ceejay.advent.util.prependTo
 
-object `Day 17 - No Such Thing as Too Much` : Day<Int, Any>() {
+object `Day 17 - No Such Thing as Too Much` : Day<Int, Any>(ignoreBlankLines = false) {
     override val number = 17
+    private const val defaultLiters = 150
 
     override fun Sequence<String>.doPart1(): Int {
         val (liters, containers) = parse()
@@ -22,8 +23,14 @@ object `Day 17 - No Such Thing as Too Much` : Day<Int, Any>() {
     private fun Sequence<String>.parse(): Pair<Int, List<Int>> {
         // Added number of liters to first line of input (to differentiate between example and real)
         val lines = toList()
-        val liters = lines.first().toInt()
-        val containers = lines.drop(1).map { it.toInt() }.sortedDescending()
+        val liters =
+            if (lines.any { it.isBlank() }) lines.takeWhile { it.isNotBlank() }.single().toInt()
+            else defaultLiters
+        val containers =
+            (if (lines.any { it.isBlank() }) lines.dropWhile { it.isNotBlank() }.drop(1)
+            else lines)
+                .map { it.toInt() }.sortedDescending()
+
         return liters to containers
     }
 

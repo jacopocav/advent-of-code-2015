@@ -4,7 +4,7 @@ import org.reflections.Reflections
 import org.reflections.scanners.Scanners
 import org.reflections.util.ConfigurationBuilder
 
-abstract class Day<O, T> : Debuggable {
+abstract class Day<O, T>(val ignoreBlankLines: Boolean = true) : Debuggable {
     abstract val number: Int
     var indent: String = ""
     override var debugEnabled: Boolean = false
@@ -15,15 +15,18 @@ abstract class Day<O, T> : Debuggable {
         else -> error("part not supported $num")
     }
 
-    fun part1(input: Input): TimedResult<O> = timed { input.withLines { doPart1() } }
-    fun part2(input: Input): TimedResult<T> = timed { input.withLines { doPart2() } }
+    fun part1(input: Input): TimedResult<O> =
+        timed { input.withLines(ignoreBlankLines) { doPart1() } }
+
+    fun part2(input: Input): TimedResult<T> =
+        timed { input.withLines(ignoreBlankLines) { doPart2() } }
 
     protected abstract fun Sequence<String>.doPart1(): O
     protected abstract fun Sequence<String>.doPart2(): T
     val filePrefix get() = "${number.toString().padStart(2, '0')}-"
 
-    private fun <T> Input.withLines(block: Sequence<String>.() -> T) =
-        withLines(filePrefix, block = block)
+    private fun <T> Input.withLines(ignoreBlankLines: Boolean, block: Sequence<String>.() -> T) =
+        withLines(filePrefix, ignoreBlankLines, block)
 
     override fun toString(): String = this::class.simpleName!!
 
