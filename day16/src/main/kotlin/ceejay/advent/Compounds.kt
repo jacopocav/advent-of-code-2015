@@ -41,7 +41,7 @@ data class Compounds(
     )
 
     companion object {
-        private fun equalOrAnyNull(value: Any?, other: Any?): Boolean =
+        private fun <T> equalOrAnyNull(value: T?, other: T?): Boolean =
             value == null || other == null || value == other
 
         fun fromMap(map: Map<String, Int>): Compounds = Compounds(

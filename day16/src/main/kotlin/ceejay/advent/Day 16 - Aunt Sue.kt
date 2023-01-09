@@ -52,5 +52,10 @@ object `Day 16 - Aunt Sue` : Day<Int, Int>() {
 
         return Sue(id, Compounds.fromMap(compounds))
     }
+
+    data class Sue(
+        val id: Int,
+        val compounds: Compounds,
+    )
 }
 
