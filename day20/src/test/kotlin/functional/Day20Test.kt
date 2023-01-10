@@ -2,11 +2,9 @@ package functional
 
 import ceejay.advent.`Day 20 - Infinite Elves and Infinite Houses`
 import ceejay.advent.util.Input
-import org.junit.jupiter.api.Disabled
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-@Disabled
 class Day20Test {
     private val underTest = `Day 20 - Infinite Elves and Infinite Houses`
 
