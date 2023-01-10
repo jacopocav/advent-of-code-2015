@@ -18,3 +18,20 @@ fun String?.isInteger(): Boolean {
     }
     return true
 }
+
+fun CharSequence.indicesOfAll(substring: String, ignoreCase: Boolean = false): List<Int> =
+    buildList {
+        val string = this@indicesOfAll
+        var index = string.indexOf(substring, ignoreCase = ignoreCase)
+
+        while (index > -1) {
+            add(index)
+            index =
+                if (index < length - 1) string.indexOf(
+                    substring,
+                    startIndex = index + 1,
+                    ignoreCase
+                )
+                else -1
+        }
+    }

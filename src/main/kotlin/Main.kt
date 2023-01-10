@@ -69,7 +69,9 @@ private fun Map.Entry<Input, List<Result>>.printResults(day: Day<*, *>) = let { 
     results.forEach { (part, _, result) ->
         print("    - Part $part result: ")
         if (result is Throwable) {
-            result.printStackTrace(System.out)
+            println(result.stackTraceToString().lines()
+                .filter { it.isNotBlank() }
+                .joinToString("\n        ") { it.trim() })
         } else {
             println(result)
         }
