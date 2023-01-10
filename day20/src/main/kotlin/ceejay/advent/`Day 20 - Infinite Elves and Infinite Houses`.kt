@@ -21,15 +21,19 @@ object `Day 20 - Infinite Elves and Infinite Houses` : Day<Int, Any>() {
         presentsPerHouse: Int,
         maxVisitedHouses: Int? = null,
     ): Int {
-        // upper limit on number of elves
-        // the elf numbered (presents/presentsPerHouse) will deliver the target number of presents
-        // on the first house, so he is the worst case result
-        val elfLimit = presents / presentsPerHouse
-        val houses = IntArray(elfLimit + 1)
+        // upper limit on number of elves and houses:
+        //   - the elf numbered (presents/presentsPerHouse) will deliver the target number of presents
+        //     on the first house, so there's no need to compute any further elf
+        //   - the house numbered (presents/presentsPerHouse) is guaranteed to have more than
+        //     the target number of presents, so it's the worst case result
+        val upperLimit = presents / presentsPerHouse
+        val houses = IntArray(upperLimit + 1)
 
-        for (elf in 1..elfLimit) {
+        for (elf in 1..upperLimit) {
             var multiple = elf
-            while (multiple <= min(elfLimit, maxVisitedHouses?.times(elf) ?: Int.MAX_VALUE)) {
+            val multipleLimit = min(upperLimit, maxVisitedHouses?.times(elf) ?: Int.MAX_VALUE)
+
+            while (multiple <= multipleLimit) {
                 houses[multiple] += elf * presentsPerHouse
                 multiple += elf
             }
