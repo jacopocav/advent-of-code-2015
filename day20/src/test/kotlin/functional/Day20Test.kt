@@ -1,6 +1,6 @@
 package functional
 
-import ceejay.advent.Day20
+import ceejay.advent.`Day 20 - Infinite Elves and Infinite Houses`
 import ceejay.advent.util.Input
 import org.junit.jupiter.api.Disabled
 import kotlin.test.Test
@@ -8,40 +8,41 @@ import kotlin.test.assertEquals
 
 @Disabled
 class Day20Test {
+    private val underTest = `Day 20 - Infinite Elves and Infinite Houses`
 
     @Test
     fun `Part 1 returns correct result on example input`() {
         // when
-        val (actual, _) = Day20.part1(Input.Example)
+        val (actual, _) = underTest.part1(Input.Example)
 
         // then
-        assertEquals(TODO(), actual)
+        assertEquals(8, actual)
     }
 
     @Test
     fun `Part 1 returns correct result on real input`() {
         // when
-        val (actual, _) = Day20.part1(Input.Real)
+        val (actual, _) = underTest.part1(Input.Real)
 
         // then
-        assertEquals(TODO(), actual)
+        assertEquals(776160, actual)
     }
 
     @Test
     fun `Part 2 returns correct result on example input`() {
         // when
-        val (actual, _) = Day20.part2(Input.Example)
+        val (actual, _) = underTest.part2(Input.Example)
 
         // then
-        assertEquals(TODO(), actual)
+        assertEquals(6, actual)
     }
 
     @Test
     fun `Part 2 returns correct result on real input`() {
         // when
-        val (actual, _) = Day20.part2(Input.Real)
+        val (actual, _) = underTest.part2(Input.Real)
 
         // then
-        assertEquals(TODO(), actual)
+        assertEquals(786240, actual)
     }
 }
