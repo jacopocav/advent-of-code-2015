@@ -3,7 +3,7 @@ package ceejay.advent
 import ceejay.advent.util.Day
 import kotlin.math.min
 
-object `Day 20 - Infinite Elves and Infinite Houses` : Day<Int, Any>() {
+object `Day 20 - Infinite Elves and Infinite Houses` : Day<Int, Int>() {
     override val number = 20
 
     override fun Sequence<String>.doPart1(): Int {
@@ -11,7 +11,7 @@ object `Day 20 - Infinite Elves and Infinite Houses` : Day<Int, Any>() {
         return findFirstHouseWithAtLeast(presents, presentsPerHouse = 10)
     }
 
-    override fun Sequence<String>.doPart2(): Any {
+    override fun Sequence<String>.doPart2(): Int {
         val presents = first().toInt()
         return findFirstHouseWithAtLeast(presents, presentsPerHouse = 11, maxVisitedHouses = 50)
     }
