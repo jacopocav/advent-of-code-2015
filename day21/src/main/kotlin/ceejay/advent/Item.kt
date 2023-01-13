@@ -13,6 +13,7 @@ data class Item(
 
     companion object {
         private val dummies = mutableMapOf<Type, Item>()
-        fun dummy(type: Type): Item = dummies.getOrPut(type) { Item("dummy", type, 0) }
+        fun dummy(type: Type): Item =
+            dummies.getOrPut(type) { Item("dummy ${type.name.lowercase()}", type, 0) }
     }
 }

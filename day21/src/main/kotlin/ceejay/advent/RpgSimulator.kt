@@ -6,18 +6,8 @@ import ceejay.advent.Item.Type.*
 import ceejay.advent.util.priorityQueueComparing
 
 class RpgSimulator(items: Iterable<Item>, val player: Character, val boss: Character) {
-    init {
-        require(player.items.isEmpty()) { "player must start with no items" }
-        require(boss.items.isEmpty()) { "boss cannot have any items" }
-    }
 
     private val shop = items.groupBy { it.type }
-
-    data class Path(
-        val items: Set<Item>,
-        val counters: Map<Type, Int>,
-        val cost: Int,
-    )
 
     fun findCheapestWin(): Int {
         val queue = priorityQueueComparing<Path, _> { it.cost }
@@ -71,6 +61,12 @@ class RpgSimulator(items: Iterable<Item>, val player: Character, val boss: Chara
             }
         }
     }
+
+    private data class Path(
+        val items: Set<Item>,
+        val counters: Map<Type, Int>,
+        val cost: Int,
+    )
 
     private fun Path.nextItems(): List<Path> {
         val eligibleItems = if (counters.getOrDefault(WEAPON, 0) == 0) {
